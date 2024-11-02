@@ -18,6 +18,12 @@ Cultura Ayacucho es una aplicación Android que muestra películas y contenido c
 - **Retrofit**: Para realizar solicitudes de red.
 - **Coil**: Para cargar imágenes.
 
+## Paginas de las implementaciones
+Para tener las ultimas actualizaciones de las librerias utilizadas en el proyecto, se puede visitar las siguientes paginas:
+- **[Coil](https://github.com/coil-kt/coil/blob/main/CHANGELOG.md#270---july-17-2024)**: Página web de la aplicación.
+- **[Retrofit](https://github.com/square/retrofit)**: Página web de la aplicación.
+
+
 ## Estructura del Proyecto
 
 - `data`: Contiene modelos de datos y clases de repositorio.
