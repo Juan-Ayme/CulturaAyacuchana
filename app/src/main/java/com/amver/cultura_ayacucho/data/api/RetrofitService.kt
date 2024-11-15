@@ -1,15 +1,14 @@
-package com.amver.cultura_ayacucho.data.repository
+package com.amver.cultura_ayacucho.data.api
 
-import com.amver.cultura_ayacucho.data.model.MovieDetail
-import com.amver.cultura_ayacucho.data.model.MovieModel
-import com.amver.cultura_ayacucho.data.model.MovieResult
+import com.amver.cultura_ayacucho.data.model.movie.MovieDetail
+import com.amver.cultura_ayacucho.data.model.movie.MovieResult
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-interface RetrofitService {
+interface RetrofitService : ApiLogin {
 
     /**
      * Se realiza una petición GET a la API de The Movie DB para obtener las películas populares
@@ -26,6 +25,7 @@ interface RetrofitService {
         @Path("movie_id") movieId : Int, // Se pasa como parámetro el ID de la película
         @Query("api_key") apiKey : String, // Se pasa como parámetro el API Key
     ): MovieDetail
+
 }
 
 /**

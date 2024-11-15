@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "538720651058",
+    "project_id": "cultura-ayacucho",
+    "storage_bucket": "cultura-ayacucho.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:538720651058:android:05f879e2d52c656961f92b",
+        "android_client_info": {
+          "package_name": "com.amver.cultura_ayacucho"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAOpgs3K4gQqV9j1XrlEJfEWoewzDnJwXs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

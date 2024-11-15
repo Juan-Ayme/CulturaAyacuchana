@@ -3,12 +3,13 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.jetbrainsKotlinSerialization)
-
+    alias(libs.plugins.gooleServices) // Firebase
+    alias(libs.plugins.crashlytics) // Firebase
 }
 
 android {
     namespace = "com.amver.cultura_ayacucho"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.amver.cultura_ayacucho"
@@ -69,6 +70,9 @@ dependencies {
     // Retrofit para las peticiones HTTP
     implementation ("com.squareup.retrofit2:retrofit:2.11.0")
     implementation ("com.squareup.retrofit2:converter-gson:2.11.0")
+    // Firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.crashlytics)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

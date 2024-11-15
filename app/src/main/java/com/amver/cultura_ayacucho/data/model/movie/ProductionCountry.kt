@@ -1,4 +1,4 @@
-package com.amver.cultura_ayacucho.data.model
+package com.amver.cultura_ayacucho.data.model.movie
 
 data class ProductionCountry(
     val iso_3166_1: String,

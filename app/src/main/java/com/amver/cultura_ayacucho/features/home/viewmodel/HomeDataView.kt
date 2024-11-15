@@ -1,16 +1,13 @@
-package com.amver.cultura_ayacucho.features.home.data
+package com.amver.cultura_ayacucho.features.home.viewmodel
 
 import android.util.Log
-import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.amver.cultura_ayacucho.data.model.MovieDetail
-import com.amver.cultura_ayacucho.data.model.MovieModel
-import com.amver.cultura_ayacucho.data.model.MovieResult
-import com.amver.cultura_ayacucho.data.repository.RetrofitServiceFactory
+import com.amver.cultura_ayacucho.data.model.movie.MovieDetail
+import com.amver.cultura_ayacucho.data.model.movie.MovieModel
+import com.amver.cultura_ayacucho.data.api.RetrofitServiceFactory
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -33,16 +30,18 @@ class HomeDataView:ViewModel() {
 
 
     init{
-        fetchPopularMovies()
+        fetchPopularMovies() //se llama a la función fetchPopularMovies
     }
 
     //fetchPopularMovies es una función que se encarga de obtener las películas populares
     private fun fetchPopularMovies(){
-        viewModelScope.launch {
+        viewModelScope.launch { //se lanza un hilo de trabajo
             try {
-                val response = retrofitService.listPopularMovies("10a194a01f1ef814a37ded893c4c9221","US")
+                val response = retrofitService.listPopularMovies(
+                    "10a194a01f1ef814a37ded893c4c9221",
+                    "US")
                 _popularMovies.clear()
-                _popularMovies.addAll(response.results)
+                _popularMovies.addAll(response.results) //se añaden las películas a la lista de películas populares
                 Log.d("HomeDataView", "Popular movies fetched")
             }catch (e: Exception){
                 println("Error fetching popular movies")

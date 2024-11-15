@@ -2,6 +2,7 @@ package com.amver.cultura_ayacucho.features.home.screen
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -15,9 +16,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.amver.cultura_ayacucho.core.navigation.ScreenNavigation
-import com.amver.cultura_ayacucho.data.model.MovieModel
-import com.amver.cultura_ayacucho.features.home.viewmodel.topBarView
-import com.amver.cultura_ayacucho.features.home.data.HomeDataView
+import com.amver.cultura_ayacucho.data.model.movie.MovieModel
+import com.amver.cultura_ayacucho.features.home.viewmodel.HomeDataView
 
 
 /**
@@ -25,20 +25,20 @@ import com.amver.cultura_ayacucho.features.home.data.HomeDataView
  * */
 
 @Composable
-fun homeMainScreen(navController: NavController,viewModel: HomeDataView = viewModel()) {
+fun HomeMainScreen(navController: NavController, viewModel: HomeDataView = viewModel()) {
 
     val movies = viewModel.moviesPopular.toList()
 
-    Scaffold(topBar = { topBarView() }) { paddingValues ->
-        Column(modifier = Modifier.padding(paddingValues)) {
-            Text(text = "Home Screen Lista de lugares turísticos")
-            Text(text = "Número de lugares turísticos: ${movies.size}")
-            LazyColumn {
+    Scaffold(
+        modifier = Modifier
+            .fillMaxSize(),
+        topBar = { topBarView() }
+    ) { paddingValues ->
+            LazyColumn(modifier = Modifier.padding(paddingValues)) {
                 items(movies) { movie ->
                     MovieItem(movie,navController)
                 }
             }
-        }
     }
 }
 
@@ -54,7 +54,7 @@ fun MovieItem(movie: MovieModel, navController: NavController) {
     ) {
         Card(modifier = Modifier.padding(8.dp)) {
             Text(text = movie.title)
-            Text(text = movie.overview)
+            Text(text = movie.overview,)
             AsyncImage(model = imageUrl, contentDescription = movie.title)
         }
     }

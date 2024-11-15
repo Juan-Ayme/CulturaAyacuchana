@@ -1,4 +1,4 @@
-package com.amver.cultura_ayacucho.data.model
+package com.amver.cultura_ayacucho.data.model.movie
 
 data class SpokenLanguage(
     val english_name: String,
