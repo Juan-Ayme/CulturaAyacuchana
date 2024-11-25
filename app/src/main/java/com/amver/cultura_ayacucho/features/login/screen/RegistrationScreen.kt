@@ -34,7 +34,9 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.amver.cultura_ayacucho.R
+import com.amver.cultura_ayacucho.core.navigation.ScreenNavigation
 import com.amver.cultura_ayacucho.features.login.components.CustomOutlinedTextField
 import com.amver.cultura_ayacucho.features.login.components.CustomOutlinedTextFieldPassword
 import com.amver.cultura_ayacucho.features.login.viewmodel.RegistrationViewModel
@@ -48,11 +50,12 @@ data class RegistrationStatus(
 )
 
 @Composable
-fun RegistrationScreen(viewModel: RegistrationViewModel = viewModel()) {
+fun RegistrationScreen(viewModel: RegistrationViewModel = viewModel(),navController: NavController) {
 
     var singUpState by remember { mutableStateOf(RegistrationStatus()) }
     val registrationState = viewModel.registrationState.collectAsState()
     val registrationResult = viewModel.registerResult
+    val errorState by viewModel.errorState.collectAsState()
     //var viewModel: RegistrationViewModel = viewModel()
 
     Box(
@@ -113,7 +116,22 @@ fun RegistrationScreen(viewModel: RegistrationViewModel = viewModel()) {
           )
 
           Text(
-              text = "Tu nombre",
+              text = "Nombre completo",
+              style = MaterialTheme.typography.bodyMedium,
+              color = Color.White,
+              modifier = Modifier.fillMaxWidth()
+          )
+
+          CustomOutlinedTextField(
+              value = singUpState.fullName,
+              onValueChange = {singUpState = singUpState.copy(fullName = it)},
+              placeholderText = "nombre completo",
+              leadingIconPainter = painterResource(id = R.drawable.icon_person),
+              leadingIconDesciption = "Person"
+          )
+
+          Text(
+              text = "Usuario",
               style = MaterialTheme.typography.bodyMedium,
               color = Color.White,
               modifier = Modifier.fillMaxWidth()
@@ -122,10 +140,11 @@ fun RegistrationScreen(viewModel: RegistrationViewModel = viewModel()) {
           CustomOutlinedTextField(
               value = singUpState.username,
               onValueChange = {singUpState = singUpState.copy(username = it)},
-              placeholderText = "tu nombre",
+              placeholderText = "nombre de usuario",
               leadingIconPainter = painterResource(id = R.drawable.icon_person),
               leadingIconDesciption = "Person"
           )
+
 
           Text(
               text = "Contraseña",
@@ -146,13 +165,6 @@ fun RegistrationScreen(viewModel: RegistrationViewModel = viewModel()) {
               visualTransformation = PasswordVisualTransformation()
           )
 
-          CustomOutlinedTextField(
-                value = singUpState.fullName,
-                onValueChange = {singUpState = singUpState.copy(fullName = it)},
-                placeholderText = "tu nombre completo",
-                leadingIconPainter = painterResource(id = R.drawable.icon_person),
-                leadingIconDesciption = "Person"
-          )
 
           Spacer(modifier = Modifier.height(16.dp))
 
@@ -175,37 +187,44 @@ fun RegistrationScreen(viewModel: RegistrationViewModel = viewModel()) {
               shape = RoundedCornerShape(16.dp)
           ) {
               Text(
-                  text = "Sign Up",
+                  text = "Registrarse",
                   fontSize = 18.sp,
                   color = Color.White
               )
           }
-
-          registrationState.value.let {
-              result ->
-              if (result != null) {
-                  when {
-                      result.isSuccess ->{
-                          Text(
-                              text = "Usuario registrado correctamente ${registrationResult.value?.email}",
-                              style = MaterialTheme.typography.bodyMedium,
-                              color = Color.White
-                          )
-                      }
-                      result.isFailure ->{
-                          Text(
-                              text = "Error al registrar usuario",
-                              style = MaterialTheme.typography.bodyMedium,
-                              color = Color.White
-                          )
-                      }
-
-                      else -> {
-                          Log.d("LoginScreen", "No se ha registrado el usuario")
-                      }
-                  }
-              }
+          errorState?.let { error ->
+                Log.d("RegistrationScreen", "Error: $error")
+              Text(
+                      text = error.message,
+                      style = MaterialTheme.typography.bodyMedium,
+                      color = Color.Red
+              )
           }
+
+          Text(
+              text = "¿Ya tienes una cuenta?",
+              style = MaterialTheme.typography.bodyMedium,
+              color = Color.White
+          )
+            //Login Button
+            Button(
+                onClick = {
+                    navController.navigate(ScreenNavigation.Login.route)
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFFB666D2)
+                ),
+                shape = RoundedCornerShape(16.dp),
+            ) {
+                Text(
+                    text = "Iniciar Sesión",
+                    fontSize = 18.sp,
+                    color = Color.White
+                )
+            }
       }
     }
 }

@@ -25,7 +25,7 @@ import com.amver.cultura_ayacucho.features.home.components.NavigationIconButton
  * @param navController es el encargado de la navegación
  */
 @Composable
-internal fun bottomBarView(navController: NavController){
+internal fun BottomBarView(navController: NavController){
     // Obtenemos la ruta actual
     val currentRoute = navController.currentBackStackEntryFlow.collectAsState(initial = null).value?.destination?.route
 

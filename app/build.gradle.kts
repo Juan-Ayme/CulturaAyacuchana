@@ -67,6 +67,7 @@ dependencies {
     // Navigation compose para la navegación
     implementation(libs.androidx.navigation.compose)
     implementation(libs.kotlinx.serialization.json)
+
     // Retrofit para las peticiones HTTP
     implementation ("com.squareup.retrofit2:retrofit:2.11.0")
     implementation ("com.squareup.retrofit2:converter-gson:2.11.0")

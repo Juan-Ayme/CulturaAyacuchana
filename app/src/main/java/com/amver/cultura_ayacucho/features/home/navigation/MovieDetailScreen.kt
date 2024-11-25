@@ -18,7 +18,7 @@ fun MovieDetailScreen(movieId: Int, viewModel: HomeDataView = viewModel(), navCo
         viewModel.getMovieById(movieId)// función para obtener la película por id
     }
 
-    val movie by viewModel.selectedMovie.collectAsState()
+    val movie by viewModel.selectedMovie.collectAsState() // se obtiene la película por id
 
     if (movie != null) {
         MovieDailCard(movie = movie!!, navController = navController)

@@ -1,11 +1,9 @@
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
-import androidx.navigation.NavHost
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -16,8 +14,7 @@ import com.amver.cultura_ayacucho.features.explore.screen.ExploreMainScreen
 import com.amver.cultura_ayacucho.features.favorite.screen.FavoriteMainScreen
 import com.amver.cultura_ayacucho.features.home.navigation.MovieDetailScreen
 import com.amver.cultura_ayacucho.features.home.screen.HomeMainScreen
-import com.amver.cultura_ayacucho.features.home.screen.ScaffoldScreen
-import com.amver.cultura_ayacucho.features.home.screen.bottomBarView
+import com.amver.cultura_ayacucho.features.home.screen.BottomBarView
 import com.amver.cultura_ayacucho.features.login.screen.LoginScreen
 import com.amver.cultura_ayacucho.features.login.screen.RegistrationScreen
 import com.amver.cultura_ayacucho.features.user.screen.UserMainSreen
@@ -46,16 +43,15 @@ fun HomeView(){
             ScaffoldScreen(navController) { UserMainSreen() }
         }
 
-        composable(ScreenNavigation.Start.route) {
-            RegistrationScreen()
+        composable(ScreenNavigation.Registration.route) {
+            RegistrationScreen(navController = navController)
         }
 
         composable(ScreenNavigation.Login.route) {
-            LoginScreen()
+            LoginScreen(navController = navController)
         }
 
         // En esta parte se define la ruta para el detalle de la película
-
         composable(
             route = ScreenNavigation.MovieDetail.route, // ruta con argumento
             arguments = listOf(navArgument("movieId") { type = NavType.IntType }) // argumento de tipo entero
@@ -72,13 +68,13 @@ fun HomeView(){
 }
 
 @Composable
-fun ScaffoldDefaults(
+fun ScaffoldScreen(
     navController: NavController,
     content: @Composable () -> Unit // contenido de la pantalla
 ){
     Scaffold (
         bottomBar = {
-            bottomBarView(navController = navController)
+            BottomBarView(navController = navController)
         }
     ){paddingValues ->
         Box(modifier = Modifier.padding(paddingValues)){

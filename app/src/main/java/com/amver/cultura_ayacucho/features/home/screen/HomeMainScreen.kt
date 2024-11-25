@@ -34,6 +34,7 @@ fun HomeMainScreen(navController: NavController, viewModel: HomeDataView = viewM
             .fillMaxSize(),
         topBar = { topBarView() }
     ) { paddingValues ->
+            //for
             LazyColumn(modifier = Modifier.padding(paddingValues)) {
                 items(movies) { movie ->
                     MovieItem(movie,navController)
@@ -44,6 +45,7 @@ fun HomeMainScreen(navController: NavController, viewModel: HomeDataView = viewM
 
 @Composable
 fun MovieItem(movie: MovieModel, navController: NavController) {
+
     val imageUrl = "https://image.tmdb.org/t/p/w500${movie.poster_path}"
     Column(
         modifier = Modifier
@@ -58,4 +60,5 @@ fun MovieItem(movie: MovieModel, navController: NavController) {
             AsyncImage(model = imageUrl, contentDescription = movie.title)
         }
     }
+
 }
