@@ -1,4 +1,4 @@
-package com.amver.cultura_ayacucho.features.home.components
+package com.amver.cultura_ayacucho.features.home.components.bottom_bar
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -37,7 +37,7 @@ internal fun BottomBarComponent(navController: NavController){
 
     BottomAppBar(
         modifier = Modifier
-            .height(60.dp),
+            .height(90.dp),
         containerColor = Color(0xFF001219),
         actions = {
             Row(
@@ -63,7 +63,7 @@ internal fun BottomBarComponent(navController: NavController){
                 NavigationIconButton(navController = navController, route = if (isLogged) ScreenNavigation.User.route else ScreenNavigation.Login.route,
                     iconColor = ImageVector.vectorResource(id = R.drawable.icon_user_color),
                     iconBorder = ImageVector.vectorResource(id = R.drawable.icon_user_border_light),
-                    contentDescription = "Usuario", isSelected = currentRoute == ScreenNavigation.Login.route)
+                    contentDescription = "Usuario", isSelected = currentRoute == ScreenNavigation.User.route)
             }
         }
     )// BottomAppBar

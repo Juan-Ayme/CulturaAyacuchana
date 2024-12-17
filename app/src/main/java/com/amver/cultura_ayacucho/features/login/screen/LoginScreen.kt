@@ -16,6 +16,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,11 +28,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.amver.cultura_ayacucho.R
@@ -46,23 +51,36 @@ data class LoggingStatus(
 
 @Composable
 fun LoginScreen(viewModel: LoginViewModel = viewModel(), navController: NavController) {
-    val loginState by viewModel.loginState.collectAsState()
+    val loginState by viewModel.loginState.collectAsState() // el estado de la petición de login
     var loggingStatus by remember { mutableStateOf(LoggingStatus()) }
 
 
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Brush.verticalGradient(
-                colors = listOf(
-                    Color(0xFF1F1F1F),
-                    Color.Gray
-                )
-            ))
+            .background(Color.Black)
     ){
+
+        IconButton(
+            onClick = {navController.navigate(ScreenNavigation.Home.route)},
+            modifier = Modifier
+                .padding(16.dp,40.dp, 0.dp, 0.dp)
+                //.align(Alignment.TopStart)
+                .background(Color.White.copy(alpha = 0.5f), shape = RoundedCornerShape(50))
+                .size(40.dp)
+
+        ) {
+            Icon(imageVector = ImageVector.vectorResource(id = R.drawable.icon_back),
+                contentDescription = "Regresar",
+                tint = Color.White,
+                modifier = Modifier.size(25.dp)
+            )
+        }
+
         Column(
             modifier = Modifier
                 .fillMaxWidth()
+                .align(Alignment.Center)
                 .verticalScroll(rememberScrollState())
                 .padding(horizontal = 16.dp, vertical = 20.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -85,7 +103,7 @@ fun LoginScreen(viewModel: LoginViewModel = viewModel(), navController: NavContr
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                text = "Correo electrónico",
+                text = "Usuario",
                 style = MaterialTheme.typography.bodyMedium,
                 color = Color.White,
                 modifier = Modifier.fillMaxWidth()
@@ -94,7 +112,7 @@ fun LoginScreen(viewModel: LoginViewModel = viewModel(), navController: NavContr
             CustomOutlinedTextField(
                 value = loggingStatus.username,
                 onValueChange = {loggingStatus = loggingStatus.copy(username = it)},
-                placeholderText = "Correo electrónico",
+                placeholderText = "Usuario",
                 leadingIconPainter = painterResource(id = R.drawable.icon_person),
                 leadingIconDesciption = " User"
             )
@@ -119,19 +137,22 @@ fun LoginScreen(viewModel: LoginViewModel = viewModel(), navController: NavContr
                 onClick = {
                     viewModel.loginUser(
                         loggingStatus.username,
-                        loggingStatus.password
+                        loggingStatus.password,
+                        navController
                     )
+
                 },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(50.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFFB666D2)
+                    containerColor = Color(0xFF0A9396)
                 ),
                 shape = RoundedCornerShape(16.dp)
             ) {
                 Text(
                     text = "Iniciar Sesión",
+                    fontSize = 18.sp,
                     color = Color.White
                 )
             }
@@ -139,15 +160,28 @@ fun LoginScreen(viewModel: LoginViewModel = viewModel(), navController: NavContr
             loginState?.let { result ->
                 result.onSuccess { response->
                     Text(
-                        text = response.message
+                        text = response.message,
+                        color = Color.White
+                    )
+                    Text(
+                        text = response.username,
+                        color = Color.White
                     )
                 }.onFailure { error ->
                     Text(
-                        text = error.message.toString()
+                        //name = error.message.toString(),
+                        text = "Llene los campos correctamente",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = Color.White,
+                        modifier = Modifier
+                            .background(Color(255,102,102), shape = RoundedCornerShape(8.dp))
+                            .padding(8.dp)
+                            .clip(RoundedCornerShape(8.dp))
                     )
                 }
+            }
 
-                Text(
+            Text(
                 text = "¿No tienes una cuenta?",
                 style = MaterialTheme.typography.bodyMedium,
                 color = Color.White
@@ -161,17 +195,17 @@ fun LoginScreen(viewModel: LoginViewModel = viewModel(), navController: NavContr
                     .fillMaxWidth()
                     .height(50.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFFB666D2)
+                    containerColor = Color(0xFF0A9396)
                 ),
                 shape = RoundedCornerShape(16.dp)
             ) {
                 Text(
                     text = "Regístrate",
+                    fontSize = 18.sp,
                     color = Color.White
                 )
             }
 
-            }
         }
     }
 }

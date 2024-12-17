@@ -12,7 +12,8 @@ import androidx.navigation.navArgument
 import com.amver.cultura_ayacucho.core.navigation.ScreenNavigation
 import com.amver.cultura_ayacucho.features.explore.screen.ExploreMainScreen
 import com.amver.cultura_ayacucho.features.favorite.screen.FavoriteMainScreen
-import com.amver.cultura_ayacucho.features.home.components.BottomBarComponent
+import com.amver.cultura_ayacucho.features.home.components.bottom_bar.BottomBarComponent
+import com.amver.cultura_ayacucho.features.home.navigation.PlaceCategoryNavigation
 import com.amver.cultura_ayacucho.features.home.navigation.PlaceDetailScreen
 import com.amver.cultura_ayacucho.features.home.screen.HomeMainScreen
 import com.amver.cultura_ayacucho.features.login.screen.LoginScreen
@@ -68,6 +69,20 @@ fun HomeNavigation(){
                 placeId = placeId!!,
                 navController = navController
             )
+        }
+
+        //navegar por categoría
+        composable(
+            route = ScreenNavigation.PlaceByCategory.route, // ruta con argumento
+            arguments =  listOf(navArgument("category") { type = NavType.StringType }) // argumento de tipo entero
+        ) { navBackStackEntry ->
+            val category = navBackStackEntry.arguments?.getString("category") // obtenemos el argumento
+
+            ScaffoldScreen(navController) {
+                PlaceCategoryNavigation(category = category!!,navController = navController)
+            }
+
+
         }
     }
 }

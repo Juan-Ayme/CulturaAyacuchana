@@ -1,26 +1,45 @@
 [versions]
 accompanistSystemuicontroller = "0.36.0"
-agp = "8.7.2"
+agp = "8.7.3"
 coilCompose = "3.0.0-rc02"
+coreTesting = "2.2.0"
+coreTestingVersion = "2.1.0"
+junitJupiterVersion = "5.10.0"
 kotlin = "2.0.0"
 coreKtx = "1.15.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
+kotlinxCoroutinesTest = "1.6.4"
+kotlinxCoroutinesTestVersion = "1.7.3"
 lifecycleRuntimeKtx = "2.8.7"
 activityCompose = "1.9.3"
 composeBom = "2024.10.01"
+mockitoCore = "4.0.0"
+mockitoCoreVersion = "4.8.0"
+mockitoInline = "4.0.0"
+mockitoInlineVersion = "5.5.0"
+mockitoJunitJupiter = "5.3.1"
+mockitoKotlin = "4.0.0"
+mockitoMockitoCore = "5.8.0"
+mockk = "1.13.7"
 navigationCompose = "2.8.3"
 kotlinxSerialization ="1.7.3"
 # Firebase
 firebaseBom = "33.5.1"
+robolectric = "4.11.1"
 service = "4.4.2"
 crashlytics = "3.0.2"
 uiDesktop = "1.7.0"
+coreKtxVersion = "1.6.1"
+junitJupiter = "5.8.1"
+junitKtx = "1.2.1"
 
 [libraries]
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanistSystemuicontroller" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-core-testing = { module = "androidx.arch.core:core-testing", version.ref = "coreTesting" }
+androidx-core-testing-v210 = { module = "androidx.arch.core:core-testing", version.ref = "coreTestingVersion" }
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coilCompose" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
@@ -36,12 +55,27 @@ androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-man
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
+junit-jupiter-v5100 = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junitJupiterVersion" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
+kotlinx-coroutines-test-v173 = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTestVersion" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
 
 #Firebase
 firebase-bom = {module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom"}
 firebase-crashlytics = {module = "com.google.firebase:firebase-crashlytics"}
 androidx-ui-desktop = { group = "androidx.compose.ui", name = "ui-desktop", version.ref = "uiDesktop" }
+mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockitoCore" }
+mockito-core-v480 = { module = "org.mockito:mockito-core", version.ref = "mockitoCoreVersion" }
+mockito-core-v580 = { module = "org.mockito:mockito-core", version.ref = "mockitoMockitoCore" }
+mockito-inline = { module = "org.mockito:mockito-inline", version.ref = "mockitoInline" }
+mockito-inline-v550 = { module = "org.mockito:mockito-inline", version.ref = "mockitoInlineVersion" }
+mockito-junit-jupiter = { module = "org.mockito:mockito-junit-jupiter", version.ref = "mockitoJunitJupiter" }
+mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockitoKotlin" }
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
+core-ktx = { group = "androidx.test", name = "core-ktx", version.ref = "coreKtxVersion" }
+junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junitJupiter" }
+androidx-junit-ktx = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "junitKtx" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

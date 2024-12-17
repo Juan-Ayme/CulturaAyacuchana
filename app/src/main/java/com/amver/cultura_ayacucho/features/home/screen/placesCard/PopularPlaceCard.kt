@@ -29,17 +29,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import com.amver.cultura_ayacucho.R
 import com.amver.cultura_ayacucho.core.navigation.ScreenNavigation
 import com.amver.cultura_ayacucho.data.model.place.PlacesItem
 
 
 @Composable
-fun PopularPlaceCardComponent(placesItem: PlacesItem, navController: NavController) {
+fun PopularPlaceCard(placesItem: PlacesItem, navController: NavController) {
     Card(
         modifier = Modifier
             .width(280.dp)
@@ -114,26 +117,44 @@ fun PopularPlaceCardComponent(placesItem: PlacesItem, navController: NavControll
                 }
 
                 // Boton de clasificacion
-                Row(
-                    modifier = Modifier
-                        .align(Alignment.BottomEnd),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Star,
-                        contentDescription = "Rating",
-                        tint = Color(0xFFFFD700), // Golden color
-                        modifier = Modifier.size(20.dp)
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text(
-
-                        text = placesItem.punctuationAverage.toString(),
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = Color.White,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
+                    Row(
+                        modifier = Modifier
+                            .align(Alignment.BottomEnd),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        // Clasificación o distancia
+                        if (placesItem.punctuationAverage != 0.0){
+                            Icon(
+                                imageVector = Icons.Default.Star,
+                                contentDescription = "Rating",
+                                tint = Color(0xFFFFD700), // Golden color
+                                modifier = Modifier.size(20.dp)
+                            )
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Text(
+                                text = placesItem.punctuationAverage.toString(),
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = Color.White,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }else{
+                            //distancia
+                            Icon(
+                                imageVector = ImageVector.vectorResource(id = R.drawable.icon_map),
+                                contentDescription = "Ubicación",
+                                tint = Color.White,
+                                modifier = Modifier.size(16.dp)
+                            )
+                            Spacer(modifier = Modifier.width(4.dp))
+                            placesItem.distance?.let {
+                                Text(
+                                    text = it,
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = Color.White
+                                )
+                            }
+                        }
+                    }
             }
 
             // Favorite button

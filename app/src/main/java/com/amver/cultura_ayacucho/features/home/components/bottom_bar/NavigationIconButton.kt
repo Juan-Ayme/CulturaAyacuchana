@@ -1,4 +1,4 @@
-package com.amver.cultura_ayacucho.features.home.components
+package com.amver.cultura_ayacucho.features.home.components.bottom_bar
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background

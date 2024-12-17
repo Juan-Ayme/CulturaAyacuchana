@@ -1,6 +1,6 @@
 package com.amver.cultura_ayacucho
 
-import HomeView
+import HomeNavigation
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -13,8 +13,9 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge() // Habilita el modo de pantalla completa
         setContent {
             Cultura_ayacuchoTheme {
-                HomeView()
+                HomeNavigation()
                 //LoginScreen()
+                //HomeMainScreen()
             }
         }
     }

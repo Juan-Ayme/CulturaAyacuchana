@@ -1,7 +1,6 @@
 package com.amver.cultura_ayacucho.features.home.components.placeCard
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,16 +13,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -40,14 +37,13 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.amver.cultura_ayacucho.R
 import com.amver.cultura_ayacucho.data.model.place.Place
-import org.w3c.dom.Comment
 
 @Composable
-fun PlaceDetailCardComponent2(
+fun PlaceDetailCardComponent(
     place: Place,
     navController: NavController
 ) {
-    var selectedTab by remember { mutableStateOf(0) }
+    var selectedTab by remember { mutableIntStateOf(0) }
 
     Box(
         modifier = Modifier
@@ -157,8 +153,9 @@ fun PlaceDetailCardComponent2(
 
             //contenido basado en la pestaña seleccionada
             when(selectedTab){
-                0-> GeneralContent(place)
+                0-> GeneralContentScreen(place)
                 1-> CommentsConent()
+
             }
 
         }
@@ -190,99 +187,9 @@ private fun TabButton(
 
 
 @Composable
-private fun GeneralContent(place: Place){
-    Column {
-        Row (
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ){
-            //Duracion
-            Row (
-                verticalAlignment = Alignment.CenterVertically
-            ){
-                Icon(
-                    imageVector = ImageVector.vectorResource(id = R.drawable.icon_back),
-                    contentDescription = "Duracion",
-                    tint = Color.Gray,
-                    modifier = Modifier.size(20.dp)
-                )
-                Column(
-                    modifier = Modifier
-                        .padding(start = 8.dp)
-                ) {
-                    Text(
-                        text = "Duracion",
-                        fontSize = 12.sp,
-                        color = Color.White
-                    )
-                    Text(
-                        text = "2 horas",
-                        fontSize = 16.sp,
-                        color = Color.White
-                    )
-                }
-            }
-
-            //Clasificacion
-            Row (verticalAlignment = Alignment.CenterVertically){
-                Icon(
-                    imageVector = Icons.Default.Star,
-                    contentDescription = "Clasificacion",
-                    tint = Color(0xFFFFD700),
-                    modifier = Modifier.size(20.dp)
-                )
-                Column(
-                    modifier = Modifier.padding(start = 8.dp)
-                ) {
-                    Text(
-                        text = "Clasificacion",
-                        fontSize = 12.sp,
-                        color = Color.White
-                    )
-                    Text(
-                        text = "${place.qualificationAverage}",
-                        fontSize = 16.sp,
-                        color = Color.White
-                    )
-                }
-            }
-        }
-
-        //Descripcion
-        Text(
-            text = place.description,
-            fontSize = 14.sp,
-            color = Color.White,
-            modifier = Modifier.padding(bottom = 16.dp)
-        )
-
-        //Boton visitar ahora
-        Button(
-            onClick = {},
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(56.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xff005F73)
-            ),
-            shape = RoundedCornerShape(16.dp)
-        ) {
-            Text(
-                text = "Visitar ahora",
-                color = Color.White,
-                fontSize = 16.sp
-            )
-        }
-
-    }
-}
-
-@Composable
 private fun CommentsConent(){
     //Implementar vista de comentarios
-    Column() {
+    Column{
         Text(
             text = "Comentarios",
             fontSize = 24.sp,

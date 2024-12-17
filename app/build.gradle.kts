@@ -74,8 +74,15 @@ dependencies {
     // Firebase
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.crashlytics)
+    implementation(libs.core.ktx)
+    implementation(libs.androidx.junit.ktx)
+
+
+    // Testing
+    testImplementation (libs.mockito.junit.jupiter)
 
     testImplementation(libs.junit)
+    testImplementation(libs.junit.jupiter)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))

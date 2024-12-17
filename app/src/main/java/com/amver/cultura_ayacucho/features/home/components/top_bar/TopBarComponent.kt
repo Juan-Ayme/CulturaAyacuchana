@@ -1,5 +1,10 @@
-package com.amver.cultura_ayacucho.features.home.components
+package com.amver.cultura_ayacucho.features.home.components.top_bar
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -25,25 +30,26 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.amver.cultura_ayacucho.R
+import com.amver.cultura_ayacucho.features.home.viewmodel.HomeMainViewModel
 
 /**
  * Este componente es el encargado de mostrar la barra de navegación superior
  */
 
 
-@Preview
 @Composable
-fun TopBarMain(){
+fun TopBarComponent(){
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -102,16 +108,20 @@ fun TopBarMain(){
 }
 
 @Composable
-fun SearchBar() {
-    val categories = getCategories()
+fun SearchBar(viewModel: HomeMainViewModel = viewModel()) {
+    val searchQuery = viewModel.searchQuery.collectAsState();
+    val categories = getCategories();
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
     ) {
         BasicTextField(
-            value = "",
-            onValueChange = { },
+            value = searchQuery.value,
+            onValueChange = { newQuery->
+                viewModel.searchPlaces(newQuery)
+
+            },
             decorationBox = { innerTextField ->
                 Row(
                     modifier = Modifier
@@ -129,11 +139,13 @@ fun SearchBar() {
                         tint = Color.Gray
                     )
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = "Buscar destino",
-                        color = Color.Gray,
-                        fontSize = 16.sp
-                    )
+                    if (searchQuery.value.isEmpty()){
+                        Text(
+                            text = "Buscar destino",
+                            color = Color.Gray,
+                            fontSize = 16.sp
+                        )
+                    }
                     innerTextField()
                 }
             }
@@ -141,43 +153,57 @@ fun SearchBar() {
     }
     //Botones de categorías
 
-    LazyRow(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp),
-        horizontalArrangement = Arrangement.SpaceEvenly
-    ){
-        items(categories){category ->
-            CategoryButton(
-                icon = category.icon,
-                text = category.text,
-                backgroundColor = Color(0xffffffff)
-            ) { }
+    AnimatedVisibility(
+        visible = searchQuery.value.isEmpty(),
+        enter = slideInVertically(initialOffsetY = {it})+ fadeIn(),
+        exit = slideOutVertically (targetOffsetY ={-it})+ fadeOut()
+    ) {
+        LazyRow(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ){
+            items(categories){category ->
+                CategoryButton(
+                    icon = category.icon,
+                    text = category.name,
+                    backgroundColor = Color(0xffffffff),
+                ) {
+                }
+            }
         }
     }
+
 }
 
 @Composable
-fun getCategories(): List<Category>{
+fun getCategories(viewModel: HomeMainViewModel = viewModel()): List<Category>{
+    val categories = viewModel.selectedCategory.value
     return listOf(
             Category(
-                icon = ImageVector.vectorResource(id = R.drawable.icon_iglesia),
-                text = "Cultural",
+                icon = if (categories.equals("Popular")) ImageVector.vectorResource(id = R.drawable.icon_star) else ImageVector.vectorResource(id = R.drawable.icon_star_border),
+                name = "Popular",
                 backgroundColor = Color(0xffffffff)
             ),
             Category(
-                icon = ImageVector.vectorResource(id = R.drawable.icon_natural_border),
-                text = "Natural",
+                icon = if (categories.equals("Cultural")) ImageVector.vectorResource(id = R.drawable.icon_iglesia) else ImageVector.vectorResource(id = R.drawable.icon_iglesia_border),
+                name = "Cultural",
                 backgroundColor = Color(0xffffffff)
             ),
             Category(
-                icon = ImageVector.vectorResource(id = R.drawable.icon_food_border),
-                text = "Gastronómico",
+                icon =  if (categories.equals("Natural")) ImageVector.vectorResource(id = R.drawable.icon_natural) else ImageVector.vectorResource(id = R.drawable.icon_natural_border),
+                name = "Natural",
                 backgroundColor = Color(0xffffffff)
             ),
             Category(
-                icon = ImageVector.vectorResource(id = R.drawable.icon_history_border),
-                text = "Histórico",
+                icon = if (categories.equals("Gastronómico")) ImageVector.vectorResource(id = R.drawable.icon_food) else ImageVector.vectorResource(id = R.drawable.icon_food_border),
+                name = "Gastronómico",
+                backgroundColor = Color(0xffffffff)
+            ),
+            Category(
+                icon = if (categories.equals("Histórico")) ImageVector.vectorResource(id = R.drawable.icon_history) else ImageVector.vectorResource(id = R.drawable.icon_history_border),
+                name = "Histórico",
                 backgroundColor = Color(0xffffffff)
             )
     )
@@ -185,7 +211,7 @@ fun getCategories(): List<Category>{
 
 data class Category(
     val icon: ImageVector,
-    val text: String,
+    val name: String,
     val backgroundColor: Color
 )
 
@@ -195,10 +221,14 @@ private fun CategoryButton(
     icon:ImageVector,
     text: String,
     backgroundColor: Color,
+    viewModel: HomeMainViewModel = viewModel(),
     onClick: () -> Unit
 ){
     Button(
-        onClick = onClick,
+        onClick = {
+            viewModel.getPlacesByCategory(text)
+            onClick()
+        },
         colors = ButtonDefaults.buttonColors(
             containerColor = backgroundColor
         ),

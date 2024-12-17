@@ -1,4 +1,4 @@
-package com.amver.cultura_ayacucho.features.login.screen
+package com.amver.cultura_ayacucho.features.register.screen
 
 import android.util.Log
 import androidx.compose.foundation.Image
@@ -27,7 +27,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -39,7 +39,7 @@ import com.amver.cultura_ayacucho.R
 import com.amver.cultura_ayacucho.core.navigation.ScreenNavigation
 import com.amver.cultura_ayacucho.features.login.components.CustomOutlinedTextField
 import com.amver.cultura_ayacucho.features.login.components.CustomOutlinedTextFieldPassword
-import com.amver.cultura_ayacucho.features.login.viewmodel.RegistrationViewModel
+import com.amver.cultura_ayacucho.features.register.viewmodel.RegistrationViewModel
 
 
 data class RegistrationStatus(
@@ -50,7 +50,7 @@ data class RegistrationStatus(
 )
 
 @Composable
-fun RegistrationScreen(viewModel: RegistrationViewModel = viewModel(),navController: NavController) {
+fun RegistrationScreen(viewModel: RegistrationViewModel = viewModel(), navController: NavController) {
 
     var singUpState by remember { mutableStateOf(RegistrationStatus()) }
     val registrationState = viewModel.registrationState.collectAsState()
@@ -61,22 +61,19 @@ fun RegistrationScreen(viewModel: RegistrationViewModel = viewModel(),navControl
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Brush.verticalGradient(
-                colors = listOf(
-                    Color(0xFF1F1F1F),
-                    Color.Gray,
-                    )
-                )
-            )
+            .background(Color.Black)
     ){
+
       Column(
           modifier = Modifier
-              .fillMaxSize()
+              .fillMaxWidth()
+              .align(Alignment.Center)
               .verticalScroll(rememberScrollState())
               .padding(horizontal = 16.dp, vertical = 20.dp),
           horizontalAlignment = Alignment.CenterHorizontally,
           verticalArrangement = Arrangement.spacedBy(16.dp)
       ) {
+
           // character image
           Image(
               painter = painterResource(id = R.drawable.login_person),
@@ -175,14 +172,15 @@ fun RegistrationScreen(viewModel: RegistrationViewModel = viewModel(),navControl
                         email = singUpState.email,
                         username = singUpState.username,
                         password = singUpState.password,
-                        fullName = singUpState.fullName
+                        fullName = singUpState.fullName,
+                        navController = navController
                   )
               },
               modifier = Modifier
                   .fillMaxWidth()
                   .height(50.dp),
               colors = ButtonDefaults.buttonColors(
-                  containerColor = Color(0xFFB666D2)
+                  containerColor = Color(0xFF0A9396)
               ),
               shape = RoundedCornerShape(16.dp)
           ) {
@@ -192,12 +190,17 @@ fun RegistrationScreen(viewModel: RegistrationViewModel = viewModel(),navControl
                   color = Color.White
               )
           }
+
           errorState?.let { error ->
-                Log.d("RegistrationScreen", "Error: $error")
+                Log.d("RegistrationScreen", "Error: ${error.errors}")
               Text(
-                      text = error.message,
-                      style = MaterialTheme.typography.bodyMedium,
-                      color = Color.Red
+                  text = error.message,
+                  style = MaterialTheme.typography.bodyMedium,
+                  color = Color.White,
+                  modifier = Modifier
+                      .background(Color(255,102,102), shape = RoundedCornerShape(8.dp))
+                      .padding(8.dp)
+                      .clip(RoundedCornerShape(8.dp))
               )
           }
 
@@ -215,7 +218,7 @@ fun RegistrationScreen(viewModel: RegistrationViewModel = viewModel(),navControl
                     .fillMaxWidth()
                     .height(50.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFFB666D2)
+                    containerColor = Color(0xFF0A9396)
                 ),
                 shape = RoundedCornerShape(16.dp),
             ) {
