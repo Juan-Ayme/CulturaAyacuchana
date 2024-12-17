@@ -1,4 +1,4 @@
-package com.amver.cultura_ayacucho.features.home.screen
+package com.amver.cultura_ayacucho.features.home.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -15,19 +15,25 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.amver.cultura_ayacucho.R
 import com.amver.cultura_ayacucho.core.navigation.ScreenNavigation
-import com.amver.cultura_ayacucho.features.home.components.NavigationIconButton
+import com.amver.cultura_ayacucho.features.login.viewmodel.LoginViewModel
 
 /**
  * Este componente es el encargado de mostrar la barra de navegación inferior
  * @param navController es el encargado de la navegación
  */
 @Composable
-internal fun BottomBarView(navController: NavController){
+internal fun BottomBarComponent(navController: NavController){
     // Obtenemos la ruta actual
     val currentRoute = navController.currentBackStackEntryFlow.collectAsState(initial = null).value?.destination?.route
+
+    val viewModel: LoginViewModel = viewModel()
+
+    val isLogged = viewModel.isSucessfulLogin()
+
 
     BottomAppBar(
         modifier = Modifier
@@ -54,7 +60,7 @@ internal fun BottomBarView(navController: NavController){
                     iconColor = Icons.Default.Favorite,
                     contentDescription = "Favoritos", isSelected =  currentRoute == ScreenNavigation.Favorite.route)
                 //Icono de Usuario
-                NavigationIconButton(navController = navController, route =  ScreenNavigation.Login.route,
+                NavigationIconButton(navController = navController, route = if (isLogged) ScreenNavigation.User.route else ScreenNavigation.Login.route,
                     iconColor = ImageVector.vectorResource(id = R.drawable.icon_user_color),
                     iconBorder = ImageVector.vectorResource(id = R.drawable.icon_user_border_light),
                     contentDescription = "Usuario", isSelected = currentRoute == ScreenNavigation.Login.route)

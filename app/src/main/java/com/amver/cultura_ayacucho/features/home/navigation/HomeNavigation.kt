@@ -12,18 +12,19 @@ import androidx.navigation.navArgument
 import com.amver.cultura_ayacucho.core.navigation.ScreenNavigation
 import com.amver.cultura_ayacucho.features.explore.screen.ExploreMainScreen
 import com.amver.cultura_ayacucho.features.favorite.screen.FavoriteMainScreen
-import com.amver.cultura_ayacucho.features.home.navigation.MovieDetailScreen
+import com.amver.cultura_ayacucho.features.home.components.BottomBarComponent
+import com.amver.cultura_ayacucho.features.home.navigation.PlaceDetailScreen
 import com.amver.cultura_ayacucho.features.home.screen.HomeMainScreen
-import com.amver.cultura_ayacucho.features.home.screen.BottomBarView
 import com.amver.cultura_ayacucho.features.login.screen.LoginScreen
-import com.amver.cultura_ayacucho.features.login.screen.RegistrationScreen
+import com.amver.cultura_ayacucho.features.register.screen.RegistrationScreen
+import com.amver.cultura_ayacucho.features.register.screen.SuccessFulRegistrationScreen
 import com.amver.cultura_ayacucho.features.user.screen.UserMainSreen
 
 /**
  * HomeView es el contenedor principal de la aplicación
  * */
 @Composable
-fun HomeView(){
+fun HomeNavigation(){
     val navController = rememberNavController() // el navController es el encargado de la navegación
 
     NavHost(
@@ -40,7 +41,7 @@ fun HomeView(){
             ScaffoldScreen(navController) { FavoriteMainScreen() }
         }
         composable(ScreenNavigation.User.route) {
-            ScaffoldScreen(navController) { UserMainSreen() }
+            ScaffoldScreen(navController) { UserMainSreen(navController = navController) }
         }
 
         composable(ScreenNavigation.Registration.route) {
@@ -51,16 +52,20 @@ fun HomeView(){
             LoginScreen(navController = navController)
         }
 
-        // En esta parte se define la ruta para el detalle de la película
+        composable(ScreenNavigation.SuccessfulRegistration.route) {
+            SuccessFulRegistrationScreen(navController)
+        }
+
+        //En esta parte se agrega la pantalla de detalle de lugar
         composable(
-            route = ScreenNavigation.MovieDetail.route, // ruta con argumento
-            arguments = listOf(navArgument("movieId") { type = NavType.IntType }) // argumento de tipo entero
+            route = ScreenNavigation.PlaceDetail.route, // ruta con argumento
+            arguments =  listOf(navArgument("placeId") { type = NavType.IntType }) // argumento de tipo entero
         ) { navBackStackEntry ->
 
-            val movieId = navBackStackEntry.arguments?.getInt("movieId") // obtenemos el argumento
+            val placeId = navBackStackEntry.arguments?.getInt("placeId") // obtenemos el argumento
 
-            MovieDetailScreen(
-                movieId = movieId!!,
+            PlaceDetailScreen(
+                placeId = placeId!!,
                 navController = navController
             )
         }
@@ -74,7 +79,7 @@ fun ScaffoldScreen(
 ){
     Scaffold (
         bottomBar = {
-            BottomBarView(navController = navController)
+            BottomBarComponent(navController = navController)
         }
     ){paddingValues ->
         Box(modifier = Modifier.padding(paddingValues)){
@@ -82,4 +87,3 @@ fun ScaffoldScreen(
         }
     }
 }
-

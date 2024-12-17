@@ -46,10 +46,10 @@ fun NavigationIconButton(navController: NavController, route: String, iconBorder
         },
             Modifier.height(28.dp)
         ) {
-            Icon(icon, contentDescription = contentDescription, modifier = Modifier.size(25.dp))
+            Icon(icon, contentDescription = contentDescription, modifier = Modifier.size(25.dp), tint = Color.White)
         }// fin IconButton
         // Línea que indica si el botón está seleccionado
-        Text(text = contentDescription, fontSize = 10.sp)
+        Text(text = contentDescription, fontSize = 10.sp,color = Color.White)
         Box(
             modifier = Modifier
                 .width(30.dp)
