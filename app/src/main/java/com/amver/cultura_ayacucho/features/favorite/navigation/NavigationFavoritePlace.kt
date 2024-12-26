@@ -1,4 +1,4 @@
-package com.amver.cultura_ayacucho.features.home.navigation
+package com.amver.cultura_ayacucho.features.favorite.navigation
 
 import android.util.Log
 import androidx.compose.foundation.background
@@ -17,21 +17,23 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.amver.cultura_ayacucho.features.home.components.placeCard.PlaceDetailCardComponent
+import com.amver.cultura_ayacucho.features.favorite.components.PlaceDetailCardFavorite
 import com.amver.cultura_ayacucho.features.home.viewmodel.HomeMainViewModel
 
 @Composable
-fun PlaceDetailScreen(placeId: Int,isFovorite:Boolean?,viewModel: HomeMainViewModel = viewModel(),navController: NavController) {
+fun NavigationFavoritePlace(placeId: Int, isFavorite: Boolean?, viewModel: HomeMainViewModel = viewModel(), navController: NavController) {
+
     LaunchedEffect(placeId) {
-        Log.e("PlaceDetailNavigation", "placeId: buscar $placeId")
+        Log.e("NavigationFavoritePlace", "placeId: buscar $placeId")
         viewModel.getPlaceById(placeId)
     }
 
     val place by viewModel.selectedPlaceState.collectAsState()
-    if (place != null) {
-        PlaceDetailCardComponent(place = place!!,navController = navController, isFavorite = isFovorite!!)
+
+    if(place != null) {
+        PlaceDetailCardFavorite(place = place!!, navController = navController, isFavorite = isFavorite)
     } else {
-        Log.e("PlaceDetailNavigation", "placeId: $placeId")
+        Log.e("NavigationFavoritePlace", "placeId: $placeId")
 
         Box(
             modifier = Modifier.fillMaxSize()

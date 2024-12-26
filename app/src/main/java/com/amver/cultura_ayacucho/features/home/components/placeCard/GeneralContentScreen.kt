@@ -40,8 +40,8 @@ fun GeneralContentScreen(place: Place){
                 verticalAlignment = Alignment.CenterVertically
             ){
                 Icon(
-                    imageVector = ImageVector.vectorResource(id = R.drawable.icon_clock),
-                    contentDescription = "Duracion",
+                    imageVector = ImageVector.vectorResource(id = R.drawable.icon_map),
+                    contentDescription = "Pronvincia",
                     tint = Color.Gray,
                     modifier = Modifier.size(20.dp)
                 )
@@ -50,12 +50,12 @@ fun GeneralContentScreen(place: Place){
                         .padding(start = 8.dp)
                 ) {
                     Text(
-                        text = "Duracion",
+                        text = "Provincia",
                         fontSize = 12.sp,
                         color = Color.White
                     )
                     Text(
-                        text = "2 horas",
+                        text = place.province,
                         fontSize = 16.sp,
                         color = Color.White
                     )

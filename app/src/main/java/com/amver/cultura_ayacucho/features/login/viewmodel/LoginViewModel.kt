@@ -2,6 +2,8 @@ package com.amver.cultura_ayacucho.features.login.viewmodel
 
 import android.app.Application
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,7 +11,6 @@ import androidx.navigation.NavController
 import com.amver.cultura_ayacucho.core.navigation.ScreenNavigation
 import com.amver.cultura_ayacucho.data.api.ApiLogin
 import com.amver.cultura_ayacucho.data.api.RetrofitServiceFactoryMain
-import com.amver.cultura_ayacucho.data.model.login.LoginError
 import com.amver.cultura_ayacucho.data.model.login.LoginRequestUser
 import com.amver.cultura_ayacucho.data.model.login.LoginResponseUser
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -33,13 +34,19 @@ class LoginViewModel(application: Application): AndroidViewModel(application) {
                     username = username,
                     password = password
                 )
+
+
                 //Se hace la peticion de login
                 val response = apiLoginService.loginUserApi(logiRequest)
                 //Se asigna el resultado de la peticion al _loginState
                 _loginState.value = Result.success(response)
 
+
                 Log.d("LoginViewModel", "User logged in successfully: $response")
                 saveTokenToPreferences(response.token,response.username,response.success)
+
+                //Schedule clear token from preferences
+                scheduleClearTokenFromPreferences(navController)
 
                 Log.d("LoginViewModel", "Token saved successfully: ${response.token}")
                 navController.navigate(ScreenNavigation.User.route)
@@ -50,6 +57,7 @@ class LoginViewModel(application: Application): AndroidViewModel(application) {
             }
         }
     }
+
 
     private fun saveTokenToPreferences(toke:String, username:String,success:Boolean){
         //Se guarda el token en las preferencias compartidas
@@ -67,13 +75,8 @@ class LoginViewModel(application: Application): AndroidViewModel(application) {
         return sharedPreferences.getString("username",null)
     }
 
-    fun getTokenFromPreferences():String?{
-        //Se obtiene el token de las preferencias compartidas
-        val sharedPreferences = getApplication<Application>().getSharedPreferences("UserPrefs",Context.MODE_PRIVATE)
-        return sharedPreferences.getString("token",null) //Se obtiene el token
-    }
 
-    fun isSucessfulLogin():Boolean{
+    fun isSuccessfulLogin():Boolean{
         //Se verifica si el token esta guardado en las preferencias compartidas
         val sharedPreferences = getApplication<Application>().getSharedPreferences("UserPrefs",Context.MODE_PRIVATE)
         return sharedPreferences.getBoolean("success",false)
@@ -85,7 +88,17 @@ class LoginViewModel(application: Application): AndroidViewModel(application) {
         val editor = sharedPreferences.edit()
         editor.remove("token")
         editor.remove("success")
+        editor.remove("username")
         editor.apply()
         navController.navigate(ScreenNavigation.Login.route)
+    }
+
+    //Funcion que se encarga de programar la limpieza del token de las preferencias compartidas
+    private fun scheduleClearTokenFromPreferences(navController: NavController){
+        val handler = Handler(Looper.getMainLooper())
+        val runnable = Runnable{
+            clearTokenFromPreferences(navController)
+        }
+        handler.postDelayed(runnable,2*60*1000)//Se limpia el token despues de 30 minutos
     }
 }

@@ -4,7 +4,8 @@ import com.google.gson.annotations.SerializedName
 
 data class Place(
     @SerializedName("descripcion") val description: String,
-    val images: List<Any>,
+    val province: String,
+    val images: List<String>,
     val location: String,
     val name: String,
     val placeId: Int,

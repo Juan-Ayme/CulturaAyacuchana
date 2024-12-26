@@ -9,11 +9,15 @@ sealed class ScreenNavigation(val route:String){
     data object Registration: ScreenNavigation("registration")
     data object SuccessfulRegistration: ScreenNavigation("successfulRegistration")
 
-    data object PlaceDetail: ScreenNavigation("placeDetail/{placeId}"){
-       fun createRoute(placeId: Int) = "placeDetail/$placeId" // función para crear la ruta con el argumento
-    }
+    data object PlaceDetail: ScreenNavigation("placeDetail/{placeId}/{isFavorite}"){
+       fun createRoute(placeId: Int,isFavorite: Boolean?) = "placeDetail/$placeId/$isFavorite" // función para crear la ruta con el argumento
 
+    }
     data object PlaceByCategory: ScreenNavigation("placeByCategory/{category}"){
         fun createRoute(category: String) = "placeByCategory/$category" // función para crear la ruta con el argumento
+    }
+
+    data object PlaceFavoriteDetail: ScreenNavigation("placeFavoriteDetail/{placeId}/{isFavorite}"){
+        fun createRoute(placeId: Int,isFavorite: Boolean?) = "placeFavoriteDetail/$placeId/$isFavorite" // función para crear la ruta con el argumento
     }
 }

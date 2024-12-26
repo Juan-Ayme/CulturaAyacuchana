@@ -7,6 +7,7 @@ import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
@@ -28,27 +29,63 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.times
 
 @Composable
-fun LoadingPlaceCardScreen() {
-    Card(
-        modifier = Modifier
-            .width(280.dp)
-            .height(250.dp),
-        shape = RoundedCornerShape(16.dp),
-        elevation = CardDefaults.cardElevation(8.dp)
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(
-                    color = Color.Gray.copy(alpha = 0.1f),
-                    shape = RoundedCornerShape(16.dp)
-                ),
-            contentAlignment = Alignment.Center
-        ) {
-            CircularProgressIndicator(
-                color = Color(0xFF00BFA6),
-                trackColor = MaterialTheme.colorScheme.surfaceVariant
-            )
+fun LoadingPlaceCardScreen(queryState: Boolean) {
+
+
+    when(queryState){
+        true->{
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.TopCenter
+            ) {
+                Card(
+                    modifier = Modifier
+                        .width(280.dp)
+                        .height(250.dp),
+                    shape = RoundedCornerShape(16.dp),
+                    elevation = CardDefaults.cardElevation(8.dp),
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(
+                                color = Color.Gray.copy(alpha = 0.1f),
+                                shape = RoundedCornerShape(16.dp)
+                            ),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        CircularProgressIndicator(
+                            color = Color(0xFF00BFA6),
+                            trackColor = MaterialTheme.colorScheme.surfaceVariant
+                        )
+                    }
+                }
+            }
+        }
+        false->{
+
+            Card(
+                modifier = Modifier
+                    .width(280.dp)
+                    .height(250.dp),
+                shape = RoundedCornerShape(16.dp),
+                elevation = CardDefaults.cardElevation(8.dp),
+            ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(
+                            color = Color.Gray.copy(alpha = 0.1f),
+                            shape = RoundedCornerShape(16.dp)
+                        ),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    CircularProgressIndicator(
+                        color = Color(0xFF00BFA6),
+                        trackColor = MaterialTheme.colorScheme.surfaceVariant
+                    )
+                }
+            }
         }
     }
 }

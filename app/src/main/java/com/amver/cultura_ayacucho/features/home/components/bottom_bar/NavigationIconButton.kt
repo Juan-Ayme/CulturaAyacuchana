@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.amver.cultura_ayacucho.core.navigation.ScreenNavigation
 
 @Composable
 fun NavigationIconButton(navController: NavController, route: String, iconBorder: ImageVector,iconColor: ImageVector , contentDescription: String, isSelected: Boolean) {
@@ -30,7 +31,6 @@ fun NavigationIconButton(navController: NavController, route: String, iconBorder
 
     // Color de la línea que indica si el botón está seleccionado
     val lineColor by animateColorAsState(targetValue = if (isSelected) color else Color.Transparent)
-
     // Icono seleccionado o no, cmabia de icono
     val icon = if(isSelected){
         iconColor
@@ -40,7 +40,8 @@ fun NavigationIconButton(navController: NavController, route: String, iconBorder
 
     Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center,
         ) {
-        IconButton(onClick = { navController.navigate(route){
+        IconButton(onClick = {
+            navController.navigate(route){
                 launchSingleTop = true // evita que se creen nuevas instancias de la pantalla si ya está abierta
             }
         },

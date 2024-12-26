@@ -23,7 +23,6 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.amver.cultura_ayacucho.R
@@ -33,7 +32,7 @@ import androidx.navigation.NavController
 
 
 @Composable
-fun UserMainSreen(viewModel: LoginViewModel = viewModel(), navController: NavController) {
+fun UserMainScreen(viewModel: LoginViewModel = viewModel(), navController: NavController) {
     val username = viewModel.getUsernameFromPreferences()
     Box(
         modifier = Modifier

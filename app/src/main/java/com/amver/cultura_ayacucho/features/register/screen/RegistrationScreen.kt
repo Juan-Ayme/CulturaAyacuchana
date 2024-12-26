@@ -3,6 +3,7 @@ package com.amver.cultura_ayacucho.features.register.screen
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -29,6 +30,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
@@ -53,11 +56,8 @@ data class RegistrationStatus(
 fun RegistrationScreen(viewModel: RegistrationViewModel = viewModel(), navController: NavController) {
 
     var singUpState by remember { mutableStateOf(RegistrationStatus()) }
-    val registrationState = viewModel.registrationState.collectAsState()
-    val registrationResult = viewModel.registerResult
     val errorState by viewModel.errorState.collectAsState()
-    //var viewModel: RegistrationViewModel = viewModel()
-
+    val focusManager = LocalFocusManager.current
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -69,7 +69,12 @@ fun RegistrationScreen(viewModel: RegistrationViewModel = viewModel(), navContro
               .fillMaxWidth()
               .align(Alignment.Center)
               .verticalScroll(rememberScrollState())
-              .padding(horizontal = 16.dp, vertical = 20.dp),
+              .padding(horizontal = 16.dp, vertical = 20.dp)
+              .pointerInput(Unit) {
+                  detectTapGestures(onTap = {
+                      focusManager.clearFocus()
+                  })
+              },
           horizontalAlignment = Alignment.CenterHorizontally,
           verticalArrangement = Arrangement.spacedBy(16.dp)
       ) {

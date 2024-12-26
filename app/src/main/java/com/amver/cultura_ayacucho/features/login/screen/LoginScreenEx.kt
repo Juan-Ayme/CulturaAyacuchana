@@ -2,7 +2,6 @@ package com.amver.cultura_ayacucho.features.login.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -18,6 +17,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -30,7 +30,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
@@ -44,21 +43,23 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.amver.cultura_ayacucho.R
 import com.amver.cultura_ayacucho.core.navigation.ScreenNavigation
+import com.amver.cultura_ayacucho.data.api.ApiState
 import com.amver.cultura_ayacucho.features.login.components.CustomOutlinedTextField
 import com.amver.cultura_ayacucho.features.login.components.CustomOutlinedTextFieldPassword
-import com.amver.cultura_ayacucho.features.login.viewmodel.LoginViewModel
+import com.amver.cultura_ayacucho.features.login.viewmodel.LoginViewModelEx
 
-data class LoggingStatus(
+
+data class LoggingStatusEX(
     val username: String = "",
     val password: String = "",
 )
 
 @Composable
-fun LoginScreen(viewModel: LoginViewModel = viewModel(), navController: NavController) {
-    val loginState by viewModel.loginState.collectAsState() // el estado de la petición de login
-    var loggingStatus by remember { mutableStateOf(LoggingStatus()) }
+fun LoginScreenEX(viewModel: LoginViewModelEx = viewModel(), navController: NavController) {
+    //val loginState = viewModel.loginState.value // el estado de la petición de login
+    var loggingStatus by remember { mutableStateOf(LoggingStatusEX()) }
     val focusManager = LocalFocusManager.current
-
+    val uiState by viewModel.uiState.collectAsState()
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -66,7 +67,9 @@ fun LoginScreen(viewModel: LoginViewModel = viewModel(), navController: NavContr
     ){
 
         IconButton(
-            onClick = {navController.navigate(ScreenNavigation.Home.route)},
+            onClick = {
+                navController.navigate(ScreenNavigation.Home.route)
+            },
             modifier = Modifier
                 .padding(16.dp,40.dp, 0.dp, 0.dp)
                 //.align(Alignment.TopStart)
@@ -144,7 +147,7 @@ fun LoginScreen(viewModel: LoginViewModel = viewModel(), navController: NavContr
 
             Button(
                 onClick = {
-                    viewModel.loginUser(
+                    viewModel.loginUserEX(
                         loggingStatus.username,
                         loggingStatus.password,
                         navController
@@ -165,28 +168,24 @@ fun LoginScreen(viewModel: LoginViewModel = viewModel(), navController: NavContr
                 )
             }
 
-            loginState?.let { result ->
-                result.onSuccess { response->
+            when(val state = uiState){
+                is ApiState.Success -> {
+                    navController.navigate(ScreenNavigation.User.route)
+                }
+                is ApiState.Error -> {
                     Text(
-                        text = response.message,
-                        color = Color.White
-                    )
-                    Text(
-                        text = response.username,
-                        color = Color.White
-                    )
-                }.onFailure { error ->
-                    Text(
-                        //name = error.message.toString(),
-                        text = "Llene los campos correctamente",
+                        text = state.message,
                         style = MaterialTheme.typography.bodyMedium,
-                        color = Color.White,
-                        modifier = Modifier
-                            .background(Color(255,102,102), shape = RoundedCornerShape(8.dp))
-                            .padding(8.dp)
-                            .clip(RoundedCornerShape(8.dp))
+                        color = Color.Red
                     )
                 }
+                is ApiState.Loading -> {
+                    CircularProgressIndicator(
+                        color = Color(0xFF00BFA6),
+                        trackColor = MaterialTheme.colorScheme.surfaceVariant
+                    )
+                }
+                else -> {}
             }
 
             Text(

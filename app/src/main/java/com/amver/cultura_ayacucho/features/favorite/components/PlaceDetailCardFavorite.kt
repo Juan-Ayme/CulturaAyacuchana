@@ -1,21 +1,16 @@
-package com.amver.cultura_ayacucho.features.home.components.placeCard
+package com.amver.cultura_ayacucho.features.favorite.components
 
+import com.amver.cultura_ayacucho.features.home.components.placeCard.GeneralContentScreen
 import android.util.Log
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
@@ -24,8 +19,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -43,28 +36,21 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.amver.cultura_ayacucho.R
 import com.amver.cultura_ayacucho.core.navigation.ScreenNavigation
-import com.amver.cultura_ayacucho.data.api.ApiFavorite
 import com.amver.cultura_ayacucho.data.model.place.Place
 import com.amver.cultura_ayacucho.features.favorite.viewmodel.FavoriteViewModel
-import com.amver.cultura_ayacucho.features.login.viewmodel.LoginViewModel
-import com.amver.cultura_ayacucho.features.login.viewmodel.LoginViewModelEx
 
 @Composable
-fun PlaceDetailCardComponent(
+fun PlaceDetailCardFavorite(
     place: Place,
     navController: NavController,
     viewModel: FavoriteViewModel = viewModel(),
-    viewModelLogin: LoginViewModelEx = viewModel(),
     isFavorite: Boolean?
 ) {
 
@@ -73,9 +59,8 @@ fun PlaceDetailCardComponent(
     //Estado local para el favorito y si isFavorite es nulo, se inicializa en false
     var isStateFavorite by remember { mutableStateOf(isFavorite?:false) }
 
-    val stateLogin = viewModelLogin.loginState
+    val currentRoute by navController.currentBackStackEntryFlow.collectAsState(initial = null)
 
-    var showLoginDialog by remember { mutableStateOf(false) }
 
     Log.e("PlaceDetailCardComponent", "isFavorite: $isFavorite")
 
@@ -103,7 +88,7 @@ fun PlaceDetailCardComponent(
         //Boton de regreso (back)
         IconButton(
             onClick = {
-                navController.navigate(ScreenNavigation.Home.route)
+                navController.navigate(ScreenNavigation.Favorite.route)
             },
             modifier = Modifier
                 .align(Alignment.TopStart)
@@ -123,18 +108,13 @@ fun PlaceDetailCardComponent(
 
         IconButton(
             onClick = {
-                if(stateLogin.value == true){
-                    if (isFavorite == true)
-                        viewModel.deleteFavoritePlace(place.placeId)
-                    else
-                        viewModel.addFavoritePlace(place.placeId)
+                if (isFavorite == true)
+                    viewModel.deleteFavoritePlace(place.placeId)
+                else
+                    viewModel.addFavoritePlace(place.placeId)
 
-                    //Cambiar el estado del favorito al inverso al hacer click
-                    isStateFavorite =! isStateFavorite
-                }else{
-                    //Pantalla de dialogo para iniciar sesion
-                    showLoginDialog = true
-                }
+                //Cambiar el estado del favorito al inverso al hacer click
+                isStateFavorite =! isStateFavorite
             },
             modifier = Modifier
                 .padding(0.dp,40.dp,16.dp,0.dp)
@@ -149,64 +129,6 @@ fun PlaceDetailCardComponent(
             )
         }
 
-        //Dialogo de inicio de sesion o registro
-        if (showLoginDialog){
-            Dialog(onDismissRequest = {showLoginDialog = false},
-            ) {
-                Surface(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 2.dp),
-                    shape = RoundedCornerShape(16.dp),
-                    color = MaterialTheme.colorScheme.surface.copy(alpha = 0.9f), // Fondo semi-transparente para el contenido
-                    border = BorderStroke(1.dp, Color.White.copy(alpha = 0.2f)) // Borde sutil
-                ) {
-                    Box(
-                        contentAlignment = Alignment.Center,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(2.dp)
-                    ){
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            modifier = Modifier.padding(8.dp)
-                        ) {
-                            Text(
-                                text = "Inicia sesión para agregar a favoritos",
-                                fontSize = 18.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = Color.White,
-                                textAlign = TextAlign.Center
-                            )
-
-                            Spacer(modifier = Modifier.height(16.dp))
-
-                            Button(
-                                onClick = {
-                                    navController.navigate(ScreenNavigation.Login.route)
-                                    showLoginDialog = false
-                                },
-                                colors = ButtonDefaults.buttonColors(
-                                    containerColor = Color(0xFF005F73)
-                                ),
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(horizontal = 24.dp),
-                                shape = RoundedCornerShape(8.dp)
-                            ) {
-                                Text(
-                                    text = "Iniciar sesión / Registrarse",
-                                    fontSize = 16.sp,
-                                    color = Color.White,
-                                    fontWeight = FontWeight.Bold,
-                                    textAlign = TextAlign.Center
-                                )
-                            }
-                        }
-                    }
-                }
-            }
-        }
         //Contenido principal
 
         Column(
@@ -217,6 +139,11 @@ fun PlaceDetailCardComponent(
                 .background(Color(0xFF1C1B1F))
                 .padding(24.dp)
         ){
+            Text(
+                text = "",
+                fontSize = 16.sp,
+                color = Color.Gray
+            )
             //Titulo
             Text(
                 text = place.name,
@@ -256,7 +183,7 @@ fun PlaceDetailCardComponent(
                     onClick = {selectedTab = 0}
                 )
                 TabButton(
-                    text = "Galería",
+                    text = "Comentarios",
                     isSelected = selectedTab == 1,
                     onClick = {selectedTab = 1}
                 )
@@ -265,7 +192,7 @@ fun PlaceDetailCardComponent(
             //contenido basado en la pestaña seleccionada
             when(selectedTab){
                 0-> GeneralContentScreen(place)
-                1-> GalleryContent(place.images)
+                1-> CommentsConent()
 
             }
 
@@ -282,7 +209,7 @@ private fun TabButton(
     Button(
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(
-            containerColor = if (isSelected) Color(0xff005F73) else Color.White.copy(alpha = 0.2f)
+            containerColor = if (isSelected) Color(0xff005F73) else Color.Transparent
         ),
         modifier = Modifier
             .padding(horizontal = 4.dp),
@@ -291,55 +218,21 @@ private fun TabButton(
         Text(
             text = text,
             fontSize = 14.sp,
-            color = Color.White,
-            fontWeight = FontWeight.Bold
+            color = if (isSelected) Color.White else Color.Gray
         )
     }
 }
 
 
 @Composable
-private fun GalleryContent(images: List<String>) {
-
-    var selectImage by remember { mutableStateOf<String?>(null) }
-
-    Column {
-        Spacer(modifier = Modifier.height(8.dp))
-        LazyRow(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            items(images) { imageUrl ->
-                AsyncImage(
-                    model = imageUrl,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(150.dp)
-                        .clip(RoundedCornerShape(8.dp))
-                        .clickable { selectImage = imageUrl },
-                    contentScale = ContentScale.Crop
-                )
-            }
-        }
-    }
-
-    if (selectImage!=null){
-        Dialog(
-            onDismissRequest = {selectImage = null}
-        ) {
-            Box(
-                modifier = Modifier
-                    .clip(RoundedCornerShape(10.dp))
-            ){
-                AsyncImage(
-                    model = selectImage,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .fillMaxWidth(  )
-                        .clickable { selectImage = null },
-                    contentScale = ContentScale.Fit
-                )
-            }
-        }
+private fun CommentsConent(){
+    //Implementar vista de comentarios
+    Column{
+        Text(
+            text = "Comentarios",
+            fontSize = 24.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color.White
+        )
     }
 }
