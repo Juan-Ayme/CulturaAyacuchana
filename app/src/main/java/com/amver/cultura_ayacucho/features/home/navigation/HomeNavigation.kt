@@ -17,10 +17,11 @@ import com.amver.cultura_ayacucho.features.home.components.bottom_bar.BottomBarC
 import com.amver.cultura_ayacucho.features.home.navigation.PlaceCategoryNavigation
 import com.amver.cultura_ayacucho.features.home.navigation.PlaceDetailScreen
 import com.amver.cultura_ayacucho.features.home.screen.HomeMainScreen
-import com.amver.cultura_ayacucho.features.login.screen.LoginScreen
-import com.amver.cultura_ayacucho.features.login.screen.LoginScreenEX
+import com.amver.cultura_ayacucho.features.login.screen.LoginScreenMain
+import com.amver.cultura_ayacucho.features.register.screen.RegistrationMainScreen
 import com.amver.cultura_ayacucho.features.register.screen.RegistrationScreen
 import com.amver.cultura_ayacucho.features.register.screen.SuccessFulRegistrationScreen
+import com.amver.cultura_ayacucho.features.register.viewmodel.RegistrationMainViewModel
 import com.amver.cultura_ayacucho.features.user.screen.UserMainScreen
 
 /**
@@ -48,11 +49,11 @@ fun HomeNavigation(){
         }
 
         composable(ScreenNavigation.Registration.route) {
-            RegistrationScreen(navController = navController)
+            RegistrationMainScreen(navController = navController)
         }
 
         composable(ScreenNavigation.Login.route) {
-            LoginScreenEX(navController = navController)
+            LoginScreenMain(navController = navController)
         }
 
         composable(ScreenNavigation.SuccessfulRegistration.route) {

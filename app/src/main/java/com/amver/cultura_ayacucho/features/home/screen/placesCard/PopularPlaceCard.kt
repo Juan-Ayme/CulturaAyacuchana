@@ -1,5 +1,6 @@
 package com.amver.cultura_ayacucho.features.home.screen.placesCard
 
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -31,8 +32,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -56,19 +55,23 @@ import com.amver.cultura_ayacucho.R
 import com.amver.cultura_ayacucho.core.navigation.ScreenNavigation
 import com.amver.cultura_ayacucho.data.model.place.PlacesItem
 import com.amver.cultura_ayacucho.features.favorite.viewmodel.FavoriteViewModel
-import com.amver.cultura_ayacucho.features.login.viewmodel.LoginViewModel
+import com.amver.cultura_ayacucho.features.login.viewmodel.LoginViewModelMain
 
 
 @Composable
-fun PopularPlaceCard(placesItem: PlacesItem, navController: NavController,viewModel: FavoriteViewModel= viewModel(),viewModelLogin: LoginViewModel = viewModel()) {
+fun PopularPlaceCard(placesItem: PlacesItem, navController: NavController,viewModel: FavoriteViewModel= viewModel(),viewModelLogin: LoginViewModelMain = viewModel()) {
 
     var isStateFavorite by remember { mutableStateOf(placesItem.isFavorite?:false) }
-    val stateLogin = viewModelLogin.loginState.collectAsState()
+    val stateLogin = viewModelLogin.isSuccessFullLogin()
     var showLoginDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(placesItem.isFavorite) {
         isStateFavorite = placesItem.isFavorite?:false
     }
+
+//    LaunchedEffect(stateLogin){
+//        Log.d("PopularPlaceCard", "$stateLogin")
+//    }
     Card(
         modifier = Modifier
             .width(280.dp)
@@ -192,7 +195,7 @@ fun PopularPlaceCard(placesItem: PlacesItem, navController: NavController,viewMo
             // Favorite button
             IconButton(
                 onClick = {
-                    if (stateLogin.value?.isSuccess == true) {
+                    if (stateLogin == true) {
                         if (placesItem.isFavorite == true)
                             viewModel.deleteFavoritePlace(placeId = placesItem.placeId)
                         else
@@ -201,7 +204,8 @@ fun PopularPlaceCard(placesItem: PlacesItem, navController: NavController,viewMo
                         // Cambiar el estado del favorito al inverso al hacer click
                         isStateFavorite = !isStateFavorite
 
-                    }else{
+                    }else if (stateLogin == false){
+                        Log.d("PopularPlaceCard", "$stateLogin")
                         showLoginDialog = true
                     }
               },

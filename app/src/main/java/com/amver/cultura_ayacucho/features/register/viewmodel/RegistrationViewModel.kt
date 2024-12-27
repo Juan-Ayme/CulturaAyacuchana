@@ -24,7 +24,7 @@ class  RegistrationViewModel: ViewModel(){
 
     // Estado de la respuesta del registro, inicializado con un valor nulo
     private val _registrationState = MutableStateFlow<Result<RegisterResponseUser>?>(null) //mutableStateOf es un objeto que se puede cambiar
-    val registrationState: StateFlow<Result<RegisterResponseUser>?> = _registrationState //state es un objeto que se puede observar
+    private val registrationState: StateFlow<Result<RegisterResponseUser>?> = _registrationState //state es un objeto que se puede observar
 
     // Variable para almacenar el resultado del registro (opcional)
     private val _registerResult = MutableStateFlow<RegisterResponseUser?>(null)

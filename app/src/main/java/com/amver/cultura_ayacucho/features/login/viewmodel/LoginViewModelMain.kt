@@ -18,11 +18,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class LoginViewModelEx(application: Application):AndroidViewModel(application) {
+class LoginViewModelMain(application: Application):AndroidViewModel(application) {
 
      private val loginRepository = LoginRepository()
 
-    private val _loginState = mutableStateOf<Boolean?>(false)
+    private val _loginState = mutableStateOf<Boolean?>(null)
     val loginState: MutableState<Boolean?> = _loginState
 
     private val _uiState = MutableStateFlow<ApiState<LoginResponseUser>>(ApiState.Empty)
@@ -35,6 +35,7 @@ class LoginViewModelEx(application: Application):AndroidViewModel(application) {
                     is ApiState.Success -> {
                         _uiState.value = ApiState.Loading
                         _loginState.value = true
+                        Log.d("LoginViewModelEX", "User logged in successfully: $_loginState")
                         saveTokenToPreferences(result.data.token,result.data.username,result.data.success)
                         scheduleClearTokenFromPreferences(navController)
                         navController.navigate(ScreenNavigation.User.route)

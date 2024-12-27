@@ -36,7 +36,9 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -46,7 +48,7 @@ import com.amver.cultura_ayacucho.core.navigation.ScreenNavigation
 import com.amver.cultura_ayacucho.data.api.ApiState
 import com.amver.cultura_ayacucho.features.login.components.CustomOutlinedTextField
 import com.amver.cultura_ayacucho.features.login.components.CustomOutlinedTextFieldPassword
-import com.amver.cultura_ayacucho.features.login.viewmodel.LoginViewModelEx
+import com.amver.cultura_ayacucho.features.login.viewmodel.LoginViewModelMain
 
 
 data class LoggingStatusEX(
@@ -55,7 +57,7 @@ data class LoggingStatusEX(
 )
 
 @Composable
-fun LoginScreenEX(viewModel: LoginViewModelEx = viewModel(), navController: NavController) {
+fun LoginScreenMain(viewModel: LoginViewModelMain = viewModel(), navController: NavController) {
     //val loginState = viewModel.loginState.value // el estado de la petición de login
     var loggingStatus by remember { mutableStateOf(LoggingStatusEX()) }
     val focusManager = LocalFocusManager.current
@@ -144,7 +146,32 @@ fun LoginScreenEX(viewModel: LoginViewModelEx = viewModel(), navController: NavC
                 leadingIconDesciption = "Lock",
                 visualTransformation = PasswordVisualTransformation()
             )
-
+            when(val state = uiState){
+                is ApiState.Success -> {
+                    navController.navigate(ScreenNavigation.User.route)
+                }
+                is ApiState.Error -> {
+                    Text(
+                        text = state.message,
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 16.sp
+                        ),
+                        color = Color.Red,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp)
+                    )
+                }
+                is ApiState.Loading -> {
+                    CircularProgressIndicator(
+                        color = Color(0xFF00BFA6),
+                        trackColor = MaterialTheme.colorScheme.surfaceVariant
+                    )
+                }
+                else -> {}
+            }
             Button(
                 onClick = {
                     viewModel.loginUserEX(
@@ -168,25 +195,6 @@ fun LoginScreenEX(viewModel: LoginViewModelEx = viewModel(), navController: NavC
                 )
             }
 
-            when(val state = uiState){
-                is ApiState.Success -> {
-                    navController.navigate(ScreenNavigation.User.route)
-                }
-                is ApiState.Error -> {
-                    Text(
-                        text = state.message,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = Color.Red
-                    )
-                }
-                is ApiState.Loading -> {
-                    CircularProgressIndicator(
-                        color = Color(0xFF00BFA6),
-                        trackColor = MaterialTheme.colorScheme.surfaceVariant
-                    )
-                }
-                else -> {}
-            }
 
             Text(
                 text = "¿No tienes una cuenta?",

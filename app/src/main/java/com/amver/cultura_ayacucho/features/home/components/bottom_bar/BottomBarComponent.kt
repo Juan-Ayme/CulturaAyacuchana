@@ -19,7 +19,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.amver.cultura_ayacucho.R
 import com.amver.cultura_ayacucho.core.navigation.ScreenNavigation
-import com.amver.cultura_ayacucho.features.login.viewmodel.LoginViewModelEx
+import com.amver.cultura_ayacucho.features.login.viewmodel.LoginViewModelMain
 
 /**
  * Este componente es el encargado de mostrar la barra de navegación inferior
@@ -30,7 +30,7 @@ internal fun BottomBarComponent(navController: NavController){
     // Obtenemos la ruta actual
     val currentRoute = navController.currentBackStackEntryFlow.collectAsState(initial = null).value?.destination?.route
 
-    val viewModel: LoginViewModelEx = viewModel()
+    val viewModel: LoginViewModelMain = viewModel()
 
     val isLogged = viewModel.isSuccessFullLogin()
 
@@ -38,7 +38,6 @@ internal fun BottomBarComponent(navController: NavController){
     BottomAppBar(
         modifier = Modifier
             .height(90.dp),
-        containerColor = Color(0xFF001219),
         actions = {
             Row(
                 modifier = Modifier.fillMaxWidth(),

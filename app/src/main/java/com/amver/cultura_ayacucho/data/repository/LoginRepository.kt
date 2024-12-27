@@ -1,8 +1,6 @@
 package com.amver.cultura_ayacucho.data.repository
 
 import android.util.Log
-import androidx.navigation.NavController
-import com.amver.cultura_ayacucho.core.navigation.ScreenNavigation
 import com.amver.cultura_ayacucho.data.api.ApiLogin
 import com.amver.cultura_ayacucho.data.api.ApiState
 import com.amver.cultura_ayacucho.data.api.RetrofitServiceFactoryMain

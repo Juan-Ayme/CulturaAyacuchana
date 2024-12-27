@@ -3,14 +3,19 @@ package com.amver.cultura_ayacucho.features.favorite.components
 import com.amver.cultura_ayacucho.features.home.components.placeCard.GeneralContentScreen
 import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
@@ -38,6 +43,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
@@ -59,7 +65,8 @@ fun PlaceDetailCardFavorite(
     //Estado local para el favorito y si isFavorite es nulo, se inicializa en false
     var isStateFavorite by remember { mutableStateOf(isFavorite?:false) }
 
-    val currentRoute by navController.currentBackStackEntryFlow.collectAsState(initial = null)
+    var showLoginDialog by remember { mutableStateOf(false) }
+
 
 
     Log.e("PlaceDetailCardComponent", "isFavorite: $isFavorite")
@@ -183,7 +190,7 @@ fun PlaceDetailCardFavorite(
                     onClick = {selectedTab = 0}
                 )
                 TabButton(
-                    text = "Comentarios",
+                    text = "Galeria",
                     isSelected = selectedTab == 1,
                     onClick = {selectedTab = 1}
                 )
@@ -192,7 +199,7 @@ fun PlaceDetailCardFavorite(
             //contenido basado en la pestaña seleccionada
             when(selectedTab){
                 0-> GeneralContentScreen(place)
-                1-> CommentsConent()
+                1-> GalleryContent(place.images)
 
             }
 
@@ -225,14 +232,48 @@ private fun TabButton(
 
 
 @Composable
-private fun CommentsConent(){
-    //Implementar vista de comentarios
-    Column{
-        Text(
-            text = "Comentarios",
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Bold,
-            color = Color.White
-        )
+private fun GalleryContent(images: List<String>) {
+
+    var selectImage by remember { mutableStateOf<String?>(null) }
+
+    Column {
+        Spacer(modifier = Modifier.height(8.dp))
+        LazyRow(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            items(images) { imageUrl ->
+                AsyncImage(
+                    model = imageUrl,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(150.dp)
+                        .clip(RoundedCornerShape(8.dp))
+                        .clickable { selectImage = imageUrl },
+                    contentScale = ContentScale.Crop
+                )
+            }
+        }
+    }
+
+    if (selectImage!=null){
+        Dialog(
+            onDismissRequest = {selectImage = null}
+        ) {
+            Box(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(10.dp))
+            ){
+                AsyncImage(
+                    model = selectImage,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .fillMaxWidth(  )
+                        .clickable { selectImage = null },
+                    contentScale = ContentScale.Fit
+                )
+            }
+        }
     }
 }
+

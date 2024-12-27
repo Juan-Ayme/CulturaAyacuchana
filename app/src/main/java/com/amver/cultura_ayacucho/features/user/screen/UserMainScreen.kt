@@ -26,13 +26,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.amver.cultura_ayacucho.R
-import com.amver.cultura_ayacucho.features.login.viewmodel.LoginViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.amver.cultura_ayacucho.features.login.viewmodel.LoginViewModelMain
 
 
 @Composable
-fun UserMainScreen(viewModel: LoginViewModel = viewModel(), navController: NavController) {
+fun UserMainScreen(viewModel: LoginViewModelMain = viewModel(), navController: NavController) {
     val username = viewModel.getUsernameFromPreferences()
     Box(
         modifier = Modifier
@@ -40,7 +40,7 @@ fun UserMainScreen(viewModel: LoginViewModel = viewModel(), navController: NavCo
             .background(Color.Black)
     ) {
         Image(
-            painter = painterResource(id = R.drawable.aa),
+            painter = painterResource(id = R.drawable.icon_user_screen),
             contentDescription = "Ayacucho",
             modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop
@@ -48,13 +48,6 @@ fun UserMainScreen(viewModel: LoginViewModel = viewModel(), navController: NavCo
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(
-                    Brush.linearGradient(
-                        colors = listOf(Color.Transparent, Color.White),
-                        start = Offset(0f, 0f),
-                        end = Offset(2000f, 2000f)
-                    )
-                )
         )
         Column(
             modifier = Modifier

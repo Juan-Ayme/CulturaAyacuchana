@@ -29,7 +29,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -47,24 +46,21 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.amver.cultura_ayacucho.R
 import com.amver.cultura_ayacucho.core.navigation.ScreenNavigation
-import com.amver.cultura_ayacucho.data.api.ApiFavorite
 import com.amver.cultura_ayacucho.data.model.place.Place
 import com.amver.cultura_ayacucho.features.favorite.viewmodel.FavoriteViewModel
-import com.amver.cultura_ayacucho.features.login.viewmodel.LoginViewModel
-import com.amver.cultura_ayacucho.features.login.viewmodel.LoginViewModelEx
+import com.amver.cultura_ayacucho.features.login.viewmodel.LoginViewModelMain
 
 @Composable
 fun PlaceDetailCardComponent(
     place: Place,
     navController: NavController,
     viewModel: FavoriteViewModel = viewModel(),
-    viewModelLogin: LoginViewModelEx = viewModel(),
+    viewModelLogin: LoginViewModelMain = viewModel(),
     isFavorite: Boolean?
 ) {
 
@@ -73,7 +69,7 @@ fun PlaceDetailCardComponent(
     //Estado local para el favorito y si isFavorite es nulo, se inicializa en false
     var isStateFavorite by remember { mutableStateOf(isFavorite?:false) }
 
-    val stateLogin = viewModelLogin.loginState
+    val stateLogin = viewModelLogin.isSuccessFullLogin()
 
     var showLoginDialog by remember { mutableStateOf(false) }
 
@@ -123,7 +119,7 @@ fun PlaceDetailCardComponent(
 
         IconButton(
             onClick = {
-                if(stateLogin.value == true){
+                if(stateLogin == true){
                     if (isFavorite == true)
                         viewModel.deleteFavoritePlace(place.placeId)
                     else

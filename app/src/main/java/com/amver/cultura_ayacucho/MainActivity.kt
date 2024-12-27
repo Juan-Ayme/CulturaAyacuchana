@@ -5,8 +5,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import com.amver.cultura_ayacucho.features.login.screen.LoginScreenEX
-import com.amver.cultura_ayacucho.features.login.viewmodel.LoginViewModelEx
 import com.amver.cultura_ayacucho.ui.theme.Cultura_ayacuchoTheme
 
 class MainActivity : ComponentActivity() {

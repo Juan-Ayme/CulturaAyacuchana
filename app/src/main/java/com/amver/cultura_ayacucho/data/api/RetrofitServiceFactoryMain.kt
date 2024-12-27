@@ -9,8 +9,8 @@ object RetrofitServiceFactoryMain {
 
     private val okHttpClient: OkHttpClient by lazy {
         OkHttpClient.Builder()
-            .connectTimeout(15, TimeUnit.SECONDS) // Aumenta el tiempo de espera de conexión
-            .readTimeout(15, TimeUnit.SECONDS) // Aumenta el tiempo de espera de lectura
+            .connectTimeout(40, TimeUnit.SECONDS) // Aumenta el tiempo de espera de conexión
+            .readTimeout(40, TimeUnit.SECONDS) // Aumenta el tiempo de espera de lectura
             .build()
     }
 
