@@ -11,8 +11,7 @@ import com.google.gson.Gson
 import retrofit2.HttpException
 import java.io.IOException
 
-class LoginRepository {
-    private val retrofitService: ApiLogin = RetrofitServiceFactoryMain.createService(ApiLogin::class.java)
+class LoginRepository( private val apiLogin: ApiLogin = RetrofitServiceFactoryMain.createService(ApiLogin::class.java)) {
 
     suspend fun loginUser(username: String,password: String):ApiState<LoginResponseUser>{
         return try {
@@ -20,7 +19,7 @@ class LoginRepository {
                 username = username,
                 password = password
             )
-            val response = retrofitService.loginUserApi(loginRequest)
+            val response = apiLogin.loginUserApi(loginRequest)
 
             Log.d("LoginViewModel", "User logged in successfully: $response")
             ApiState.Success(response)
@@ -32,6 +31,9 @@ class LoginRepository {
         }catch (e:IOException){
             Log.e("LoginViewModel", "Login failed: ${e.message}")
             ApiState.Error(e.message.toString())
-    }
+    }catch (e:Exception){
+            Log.e("LoginViewModel", "Login failed: ${e.message}")
+            ApiState.Error(e.message.toString())
+        }
     }
 }

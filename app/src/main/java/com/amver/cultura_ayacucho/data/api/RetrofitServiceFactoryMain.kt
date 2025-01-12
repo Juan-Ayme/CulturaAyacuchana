@@ -16,7 +16,7 @@ object RetrofitServiceFactoryMain {
 
     private val retrofit: Retrofit by lazy {
         Retrofit.Builder()
-            .baseUrl("http://192.168.0.104:8080/api/v1/")
+            .baseUrl("http://192.168.56.1:8080/api/v1/")
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create()) // Este es el convertidor que se encarga de convertir la respuesta en un objeto de tipo Gson
             .build()

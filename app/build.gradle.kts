@@ -11,6 +11,7 @@ android {
     namespace = "com.amver.cultura_ayacucho"
     compileSdk = 35
 
+
     defaultConfig {
         applicationId = "com.amver.cultura_ayacucho"
         minSdk = 24
@@ -48,6 +49,9 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+    testOptions {
+        unitTests.isReturnDefaultValues = true
+    }
 }
 
 dependencies {
@@ -77,9 +81,19 @@ dependencies {
     implementation(libs.core.ktx)
     implementation(libs.androidx.junit.ktx)
 
+
+    //Test Experimental
+    implementation (libs.slf4j.simple)
+// https://mvnrepository.com/artifact/ch.qos.logback/logback-classic
+    testImplementation("ch.qos.logback:logback-classic:1.5.6")
+
+
+    testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.1")
+    testImplementation ("io.mockk:mockk:1.13.5")
+    testImplementation ("androidx.arch.core:core-testing:2.2.0")
+
     // Testing
     testImplementation (libs.mockito.junit.jupiter)
-
 
     testImplementation(libs.junit)
     testImplementation(libs.junit.jupiter)

@@ -31,6 +31,7 @@ firebaseBom = "33.5.1"
 robolectric = "4.11.1"
 service = "4.4.2"
 crashlytics = "3.0.2"
+slf4jSimple = "1.7.36"
 uiDesktop = "1.7.0"
 coreKtxVersion = "1.6.1"
 junitJupiter = "5.8.1"
@@ -78,6 +79,7 @@ robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectr
 core-ktx = { group = "androidx.test", name = "core-ktx", version.ref = "coreKtxVersion" }
 junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junitJupiter" }
 androidx-junit-ktx = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "junitKtx" }
+slf4j-simple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4jSimple" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
