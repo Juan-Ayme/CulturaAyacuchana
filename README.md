@@ -46,3 +46,9 @@ Para tener las ultimas actualizaciones de las librerias utilizadas en el proyect
 1. Clona el repositorio:
    ```sh
    git clone https://github.com/yourusername/cultura-ayacucho.git
+
+![Captura de pantalla 2025-01-14 105632](https://github.com/user-attachments/assets/2be296a1-0144-4bcc-9f5e-27bf870d0eb5)
+![Captura de pantalla 2025-01-14 105607](https://github.com/user-attachments/assets/5f1cc2f5-6bd9-4345-a484-86ea73d6c428)
+![Captura de pantalla 2025-01-14 105513](https://github.com/user-attachments/assets/dd92bf5b-8772-4abc-b2a5-a4722adc60bd)
+![Captura de pantalla 2025-01-14 105542](https://github.com/user-attachments/assets/8dd3b2d0-ad61-4223-93a4-997384892ed6)
+![Captura de pantalla 2025-01-14 100810](https://github.com/user-attachments/assets/8b941d20-263b-4b22-8ab6-f9f0f0489726)
